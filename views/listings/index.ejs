@@ -1,0 +1,266 @@
+<% layout("/layouts/boilerplate") -%>
+
+    <style>
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .filter {
+            text-align: center;
+            margin-right: 2rem;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        /* .filter p {
+            font-size: 0.8rem;
+        } */
+        .tax-info {
+            display: none;
+        }
+
+        .tax-toggle {
+            border: 1px solid black;
+            border-radius: 1rem;
+            height: 2.25rem;
+            padding: 1rem;
+            margin-left: 2rem;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        #chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0d6efd;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 26px;
+            text-align: center;
+            line-height: 60px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        #chat-box {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        #chat-messages {
+            height: 250px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #chat-box input {
+            border: none;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            width: 70%;
+            outline: none;
+        }
+
+        #chat-box button {
+            width: 30%;
+            border: none;
+            background: #0d6efd;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+
+    <div id="filters">
+        <div class="filter" id="previewBtn">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </div>
+
+        <div class="filter" id="rooms">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter" id="cities">
+            <div><i class="fa-solid fa-mountain-city"></i></div>
+            <p>Iconic Cities</p>
+        </div>
+        <div class="filter" id="mountains">
+            <div><i class="fa-solid fa-mountain-sun"></i></div>
+            <p>Mountains</p>
+        </div>
+        <div class="filter" id="castles">
+            <div><i class="fa-solid fa-chess"></i></div>
+            <p>Castles</p>
+        </div>
+        <div class="filter" id="pools">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p>Amazing Pools</p>
+        </div>
+        <div class="filter" id="campings">
+            <div><i class="fa-solid fa-campground"></i></div>
+            <p>Camping</p>
+        </div>
+
+        <div class="tax-toggle">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <%for( let listing of allListings){%>
+            <a href="/listings/<%= listing._id %>">
+                <div class="card col  listing-card">
+                    <img src="<%=listing.image.url  %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b>
+                                <%=listing.title%>
+                            </b>
+                            <br>
+                            &#8377; <%=listing.price%> / night
+                                <i class="tax-info"> &nbsp; &nbsp; +18% GST</i>
+                        </p>
+                    </div>
+
+                </div>
+            </a>
+            <%}%>
+
+    </div>
+
+    <!-- Chat Icon -->
+    <div id="chat-icon" onclick="toggleChat()">💬</div>
+
+    <!-- Chat Box -->
+    <div id="chat-box">
+        <div id="chat-messages"></div>
+        <div style="display: flex;">
+            <input type="text" id="userInput" placeholder="Type your message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+        taxSwitch.addEventListener("click", () => {
+            let taxInfo = document.getElementsByClassName("tax-info");
+
+            for (info of taxInfo) {
+                if (info.style.display != "inline") {
+                    info.style.display = "inline";
+                } else {
+                    info.style.display = "none";
+                }
+
+            }
+        })
+
+
+
+        document.getElementById("previewBtn").addEventListener("click", () => {
+            window.open("/listings/preview", "_blank"); // naya page khulta
+        });
+
+        document.getElementById("rooms").addEventListener("click", () => {
+            window.open("/listings/preview", "_blank"); // naya page khulta
+        });
+
+        document.getElementById("cities").addEventListener("click", () => {
+            window.open("/listings/preview", "_blank"); // naya page khulta
+        });
+        document.getElementById("mountains").addEventListener("click", () => {
+            window.open("/listings/preview", "_blank"); // naya page khulta
+        });
+        document.getElementById("castles").addEventListener("click", () => {
+            window.open("/listings/preview", "_blank"); // naya page khulta
+        });
+        document.getElementById("pools").addEventListener("click", () => {
+            window.open("/listings/preview", "_blank"); // naya page khulta
+        });
+        document.getElementById("campings").addEventListener("click", () => {
+            window.open("/listings/preview", "_blank"); // naya page khulta
+        });
+
+        const chat = document.getElementById("chat");
+
+        function send() {
+            const input = document.getElementById("userInput");
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            chat.innerHTML += `<div><b>You:</b> ${msg}</div>`;
+            input.value = "";
+
+            let reply = "Hmm, I didn't get that. Try asking something else.";
+
+            if (msg.toLowerCase().includes("hello") || msg.toLowerCase().includes("hi")) {
+                reply = "Hi! How can I assist you with SmartHomefinder today?";
+            } else if (msg.toLowerCase().includes("book")) {
+                reply = "To book a listing, click on any home and press 'Book Now'.";
+            } else if (msg.toLowerCase().includes("price")) {
+                reply = "Prices vary by location and dates. Explore listings for details.";
+            } else if (msg.toLowerCase().includes("bye")) {
+                reply = "Goodbye! Hope to see you again at SmartHomeFinder 🏡";
+            }
+
+            setTimeout(() => {
+                chat.innerHTML += `<div><b>Bot:</b> ${reply}</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 500);
+        }
+        function toggleChat() {
+            const chat = document.getElementById("chat-box");
+            chat.style.display = (chat.style.display === "none") ? "block" : "none";
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("userInput");
+            const chat = document.getElementById("chat-messages");
+            const message = input.value.trim();
+            if (!message) return;
+
+            chat.innerHTML += `<div><b>You:</b> ${message}</div>`;
+            input.value = "";
+
+            const res = await fetch("/api/groq", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
+
+            const data = await res.json();
+            chat.innerHTML += `<div><b>WanderBot:</b> ${data.reply}</div>`;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+    </script>
