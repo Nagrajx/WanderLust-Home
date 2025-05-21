@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 
 /// =====mongoose connections====
-const dbUrl = process.env.ATLASDB_URL
+const dbUrl = process.env.NODE.ENV.ATLASDB_URL
 main().then(() => {
     console.log("Connected to db")
 }).catch((err) => {
@@ -52,7 +52,7 @@ async function main() {
 const store = MongoStore.create({
     mongoUrl:dbUrl,
     crypto:{
-        secret:process.env.SECRET,
+        secret:process.env.NODE.ENV.SECRET,
     },
     touchAfter: 24 * 3600,
 });
