@@ -1,4 +1,5 @@
-if (process.env.NODE.ENV != "production") {
+if  (process.env.NODE_ENV !== "production") {
+
     require('dotenv').config();
 }
 
@@ -38,7 +39,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 
 /// =====mongoose connections====
-const dbUrl = process.env.NODE.ENV.ATLASDB_URL
+const dbUrl = process.env.ATLASDB_URL
 main().then(() => {
     console.log("Connected to db")
 }).catch((err) => {
@@ -52,7 +53,7 @@ async function main() {
 const store = MongoStore.create({
     mongoUrl:dbUrl,
     crypto:{
-        secret:process.env.NODE.ENV.SECRET,
+        secret:process.env.SECRET,
     },
     touchAfter: 24 * 3600,
 });
